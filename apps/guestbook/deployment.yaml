@@ -11,7 +11,7 @@ spec:
   template:
     metadata:
       labels:
-        app: guestbook-ui
+        app: guestbook-ui 
     spec:
       containers:
         - image: gcr.io/google-samples/gb-frontend:v5
