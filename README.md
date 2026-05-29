@@ -110,7 +110,7 @@ kubectl get pods -n argocd
 
 # Step 3 — Enable ArgoCD Insecure Mode (HTTP)
 
-For learning purposes, ArgoCD was configured to run in HTTP mode instead of HTTPS.
+ArgoCD was configured to run in HTTP mode instead of HTTPS.
 
 Edit ConfigMap:
 
@@ -121,7 +121,8 @@ kubectl edit configmap argocd-cmd-params-cm -n argocd
 Add:
 
 ```yaml
-server.insecure: "true"
+data:
+  server.insecure: "true"
 ```
 
 Restart ArgoCD server:
@@ -206,7 +207,7 @@ Password: decoded password
 # Step 6 — Login to ArgoCD CLI
 
 ```bash
-argocd login <EC2-PUBLIC-IP>:<NODEPORT> --insecure
+argocd login <EC2-PUBLIC-IP>:<NODEPORT> 
 ```
 
 Use the same username and password used for UI login.
@@ -224,13 +225,13 @@ kubectl config get-contexts
 Add Spoke Cluster 1:
 
 ```bash
-argocd cluster add <spoke-cluster-1-context> --server <EC2-PUBLIC-IP>:<NODEPORT> --insecure
+argocd cluster add <spoke-cluster-1-context> --server <EC2-PUBLIC-IP>:<NODEPORT> 
 ```
 
 Add Spoke Cluster 2:
 
 ```bash
-argocd cluster add <spoke-cluster-2-context> --server <EC2-PUBLIC-IP>:<NODEPORT> --insecure
+argocd cluster add <spoke-cluster-2-context> --server <EC2-PUBLIC-IP>:<NODEPORT> 
 ```
 
 Verify registered clusters:
@@ -265,38 +266,8 @@ applicationset.yaml
 
 Add:
 
-```yaml
-apiVersion: argoproj.io/v1alpha1
-kind: ApplicationSet
-
-metadata:
-  name: guestbook-appset
-  namespace: argocd
-
-spec:
-  generators:
-  - clusters: {}
-
-  template:
-    metadata:
-      name: '{{name}}-guestbook'
-
-    spec:
-      project: default
-
-      source:
-        repoURL: https://github.com/argoproj/argocd-example-apps.git
-        targetRevision: HEAD
-        path: guestbook
-
-      destination:
-        server: '{{server}}'
-        namespace: default
-
-      syncPolicy:
-        automated:
-          prune: true
-          selfHeal: true
+```
+Copy from applicationsets/applicationset.yaml
 ```
 
 Apply:
@@ -322,24 +293,6 @@ kubectl get all
 ```
 
 Repeat for other spoke clusters.
-
----
-
-# GitOps Repository Structure
-
-```text
-gitops-repo/
-│
-├── applicationsets/
-│   └── applicationset.yaml
-│
-├── apps/
-│   └── guestbook/
-│       ├── deployment.yaml
-│       └── service.yaml
-```
-
----
 
 # Conclusion
 
