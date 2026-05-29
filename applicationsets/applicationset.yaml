@@ -1,0 +1,31 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+
+metadata:
+  name: guestbook-appset
+  namespace: argocd
+
+spec:
+  generators:
+  - clusters: {}
+
+  template:
+    metadata:
+      name: '{{name}}-guestbook'
+
+    spec:
+      project: default
+
+      source:
+        repoURL: https://github.com/rahulnr107/argocd-hub-spoke-gitops.git
+        targetRevision: HEAD
+        path: apps/guestbook
+
+      destination:
+        server: '{{server}}'
+        namespace: default
+
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true

@@ -1,0 +1,37 @@
+# Windows thumbnail/cache files
+Thumbs.db
+
+# Prevents personal editor settings from being pushed
+.vscode/
+
+# Application log files
+*.log
+
+# Environment variable files
+# Can contain secrets, tokens, passwords
+.env
+
+# Local kubeconfig file
+# Contains cluster access credentials and tokens
+kubeconfig
+
+# Backup files
+*.bak
+
+# Temporary YAML outputs
+*.tmp.yaml
+
+# Generated manifests
+rendered-manifest.yaml
+
+
+# -----------------------------
+# Miscellaneous
+# -----------------------------
+
+# Swap files
+*.swp
+
+# Temporary files
+*.tmp
+```
